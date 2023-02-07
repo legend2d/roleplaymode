@@ -1,0 +1,4 @@
+<meta>
+<script src="createVehicle_s.lua" type="server" cache="false"/>
+<script src="createVehicle_c.lua" type="client" cache="false"/>
+</meta>
