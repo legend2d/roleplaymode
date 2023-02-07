@@ -1,0 +1,7 @@
+<meta>
+<script src="item_system_s.lua" type="server" cache="false"/>
+<script src="item_system_c.lua" type="client" cache="false"/>
+
+<file src="GFX/inventory/backpack.png"/>
+<file src="GFX/inventory/id.png"/>
+</meta>
