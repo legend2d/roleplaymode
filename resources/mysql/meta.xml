@@ -1,0 +1,4 @@
+<meta>
+<script src="mysql_s.lua" type="server" cache="false"/>
+<export function="dbConnect" type="server"/>
+</meta>
