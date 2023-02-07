@@ -1,0 +1,14 @@
+<meta>
+<script src="admin_manager_s.lua" type="server" cache="false"/>
+<script src="admin_manager_c.lua" type="client" cache="false"/>
+<script src="admin_list.lua" type="client" cache="false"/>
+<script src="admin_list.lua" type="server" cache="false"/>
+<script src="admin_interview_c.lua" type="client" cache="false"/>
+<script src="admin_interview_s.lua" type="server" cache="false"/>
+<script src="adminevents/servercommands.lua" type="server" cache="false"/>
+<script src="adminevents/ucp_c.lua" type="client" cache="false"/>
+<script src="adminevents/ucp_s.lua" type="server" cache="false"/>
+
+<script src="adminevents/fly_c.lua" type="client" cache="false"/>
+<script src="adminevents/fly_s.lua" type="server" cache="false"/>
+</meta>
