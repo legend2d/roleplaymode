@@ -1,0 +1,12 @@
+<meta>
+<script src="auth_c.lua" type="client" cache="false"/>
+<script src="auth_s.lua" type="server" cache="false"/>
+<script src="auth_gui.lua" type="client" cache="false"/>
+<script src="config.lua" type="shared"/>
+<script src="save_crc.lua" type="server"/>
+
+<script src="firstauth_c.lua" type="client" cache="false"/>
+<script src="firstauth_s.lua" type="server" cache="false"/>
+
+<file src="pear.ttf" cache="false"/>
+</meta>
