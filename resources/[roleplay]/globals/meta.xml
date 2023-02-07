@@ -1,0 +1,24 @@
+<meta>
+<script src="findevents.lua" type="server" cache="false"/>
+<script src="id_system.lua" type="server" cache="false"/>
+<script src="events.lua" type="server" cache="false"/>
+
+<export function="findPlayerByAccount" type="server"/>
+<export function="findPlayerByID" type="server"/>
+<export function="findIDByPlayer" type="server"/>
+<export function="findPlayerByName" type="server"/>
+<export function="findPlayerByPartialNick" type="server"/>
+
+<export function="giveMoney" type="server"/>
+<export function="takeMoney" type="server"/>
+<export function="setMoney" type="server"/>
+
+<export function="setArmor" type="server"/>
+<export function="setHP" type="server"/>
+<export function="setSkin" type="server"/>
+
+<export function="setLevel" type="server"/>
+
+<export function="stringCheck" type="server"/>
+
+</meta>
