@@ -117,6 +117,29 @@
 			if rankChange_show_window then guiSetVisible(rankChange_show_window, false) end
 		elseif source == factionchat_button then
 			triggerServerEvent("factionChat", localPlayer, getElementData(localPlayer, "faction"))
+		elseif source == rankChange_show_updatebutton then
+			if tonumber(factiontype)==5 then
+			triggerServerEvent("updateFactionRank", localPlayer, tonumber(getElementData(localPlayer, "faction")), _rankid, tostring(guiGetText(rankChange_show_rankname)), guiGetText(rankChange_show_price))
+			else
+			triggerServerEvent("updateFactionRank", localPlayer, tonumber(getElementData(localPlayer, "faction")), _rankid, tostring(guiGetText(rankChange_show_rankname)), false)
+			end
+		elseif source == changerank_button then
+			local player = guiGridListGetItemText ( faction_player_gridlist, guiGridListGetSelectedItem ( faction_player_gridlist ), faction_personal )
+			if player ~= "" then
+				triggerServerEvent("changeRankServer", localPlayer, player)
+			end
+		elseif source == kick_button then
+			local player = guiGridListGetItemText ( faction_player_gridlist, guiGridListGetSelectedItem ( faction_player_gridlist ), faction_personal )
+			if player ~= "" then
+				triggerServerEvent("kickPlayerFaction", localPlayer, player)
+			end
+		elseif source == leader_button then
+			local player = guiGridListGetItemText ( faction_player_gridlist, guiGridListGetSelectedItem ( faction_player_gridlist ), faction_personal )
+			if player ~= "" then
+				triggerServerEvent("leadPlayerFaction", localPlayer, player)
+			end
+		elseif source == invite_button then
+			inviteScreen()
 		end
 	end
 	addEventHandler("onClientGUIClick", root, leaderClickOptions)
@@ -134,6 +157,9 @@
 		if faction_window_example then guiSetVisible(faction_window_example, false) end
 		if faction_window then guiSetVisible(faction_window, false) end
 		if rankChange_window then guiSetVisible(rankChange_window, false)  end
+		if personelRank_window_example then guiSetVisible(personelRank_window_example, false) end
+		if personelRank_window then guiSetVisible(personelRank_window, false) end
+		if invite_window then guiSetVisible(invite_window, false) end
 		setElementData(localPlayer, "factionpanel", false)
 	end
 	addEvent("closeAll", true)
@@ -160,7 +186,7 @@
         guiGridListSetItemText(rankChange_gridlist, row, rank_id, rutbe.id, false, false)
         guiGridListSetItemText(rankChange_gridlist, row, rank_name, rutbe.rankname, false, false)
 		if tonumber(ftype)==5 then
-		guiGridListSetItemText(rankChange_gridlist, row, rank_price, "$0", false, false)
+		guiGridListSetItemText(rankChange_gridlist, row, rank_price, rutbe.rankpricex, false, false)
 		end
 		end
         rankChange_close = guiCreateButton(404, 246, 160, 29, "Kapat", false, rankChange_window)
@@ -173,6 +199,9 @@
 
 
     function showRank(rankid, rankname, rankprice)
+		_rankid = rankid
+		_rankname = rankname
+		_rankprice = rankprice or false
 		if rankChange_show_window and guiGetVisible(rankChange_show_window)==true then guiSetVisible(rankChange_show_window, false) return end
 		local screenW, screenH = guiGetScreenSize()
         rankChange_show_window = guiCreateWindow(0.72, 0.32, 0.16, 0.37, "Rütbe: "..rankid.."", true)
@@ -199,5 +228,53 @@
 			if selected_rank ~= "" then 
 				showRank(selected_rank, selected_rankname, selected_rankprice)
 			end
+		end
+	end)
+	
+	addEvent("updateRankGui", true)
+	addEventHandler("updateRankGui", root, function(id, name, price)
+		if not price then
+		guiGridListSetItemText(rankChange_gridlist, tonumber(id)-1, rank_name, name, false, false)
+		else
+		guiGridListSetItemText(rankChange_gridlist, tonumber(id)-1, rank_name, name, false, false)
+		guiGridListSetItemText(rankChange_gridlist, tonumber(id)-1, rank_price, price, false, false)
+		end
+	end)
+	
+
+    function inviteScreen()
+		if invite_window and guiGetVisible(invite_window)==true then guiSetVisible(invite_window, false) return end
+		local screenW, screenH = guiGetScreenSize()
+        invite_window = guiCreateWindow((screenW - 338) / 2, (screenH - 113) / 2, 338, 113, "Birlik Davet Paneli", false)
+        guiWindowSetMovable(invite_window, false)
+        guiWindowSetSizable(invite_window, false)
+
+        invite_editbox = guiCreateEdit(11, 27, 317, 24, "", false, invite_window)
+        invite_infolabel = guiCreateLabel(10, 52, 318, 28, "Davet etmek istediğiniz oyuncunun adını \nveya ID'sini kutucuğa yazın.", false, invite_window)
+        guiLabelSetHorizontalAlign(invite_infolabel, "center", false)
+        invite_cancelbutton = guiCreateButton(9, 83, 78, 20, "İptal", false, invite_window)
+        invite_sendbutton = guiCreateButton(246, 83, 78, 20, "Davet Et", false, invite_window)    
+    end	
+	
+	function inviteScreenToPlayer(daveteden, factionname, id)
+		showCursor(true)
+		if invite_window_player and guiGetVisible(invite_window_player)==true then guiSetVisible(invite_window_player, false) return end
+		local screenW, screenH = guiGetScreenSize()
+        invite_window_player = guiCreateWindow((screenW - 338) / 2, (screenH - 113) / 2, 338, 113, factionname, false)
+        guiWindowSetMovable(invite_window_player, false)
+        guiWindowSetSizable(invite_window_player, false)
+        invite_infolabel_player = guiCreateLabel(10, 52, 318, 28, getPlayerName(daveteden).." tarafından bir birlik daveti aldınız.", false, invite_window_player)
+        guiLabelSetHorizontalAlign(invite_infolabel_player, "center", false)
+        invite_cancelbutton_player = guiCreateButton(9, 83, 78, 20, "Reddet", false, invite_window_player)
+        invite_acceptbutton_player = guiCreateButton(246, 83, 78, 20, "Kabul Et", false, invite_window_player)    
+    end	
+	addEvent("inviteScreenGUI", true)
+	addEventHandler("inviteScreenGUI", root, inviteScreenToPlayer)
+
+	addEventHandler("onClientGUIClick", root, function()
+		if source == invite_cancelbutton then guiSetVisible(invite_window, false) return end
+		if source == invite_sendbutton then
+		local name = guiGetText(invite_editbox) or ""
+		triggerServerEvent("invitePlayerToFaction", localPlayer, name, getElementData(localPlayer, "faction"))
 		end
 	end)

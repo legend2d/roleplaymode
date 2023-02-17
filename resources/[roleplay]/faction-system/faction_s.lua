@@ -22,13 +22,34 @@ function getFactionData(factionid, data)
 	end
 end
 
+function changeRankServer(name)
+	if (name) then
+		triggerClientEvent(source, "updatePersonalRankEx", source)
+		local allranks = {}
+		local mevcutrank = getPlayerFactionRank(name)
+		for i = 1, 20 do
+			rank = getFactionRank(tonumber(getElementData(source, "faction")), i)
+			table.insert(allranks, {id = i, rname = rank})
+		end
+		triggerClientEvent(source, "updateRankGUI", source, name, allranks, mevcutrank)
+	end
+end
+addEvent("changeRankServer", true)
+addEventHandler("changeRankServer", root, changeRankServer)
+
 function getAllRanks(factionid)
 	if tonumber(factionid) then
 		local ranks = {}
 		local factiontype = getFactionData(factionid, "type")
 		for i = 1, 20 do
+		if tonumber(factiontype)==5 then
+		rank_price = "rank"..i.."price"
+		rankprice = getFactionData(factionid, rank_price)
+		else
+		rankprice = nil
+		end
 		local rank = getFactionRank(factionid, i)
-		table.insert(ranks, {id = i, rankname = rank})
+		table.insert(ranks, {id = i, rankname = rank, rankpricex = rankprice})
 		end
 		triggerClientEvent(source, "faction_rankChange", source, ranks, factiontype)
 		triggerClientEvent(source, "closeExamples", source)
@@ -105,11 +126,11 @@ addEvent("factionChat", true)
 addEventHandler("factionChat", root, factionChatManage)
 
 local function openFactionPanel(source)
-	local example = triggerClientEvent(source, "factionPanel_example", source)
+	if tonumber(getElementData(source, "faction"))<0 then outputChatBox("[-] #ffffffHerhangi bir oluşumda bulunmuyorsunuz.",source,255,0,0,true) return end
 	if not getElementData(source, "factionpanel") then
 	setElementData(source, "factionpanel", true)
 	local factionPlayers = {}
-	if tonumber(getElementData(source, "faction"))<0 then outputChatBox("[-] #ffffffHerhangi bir oluşumda bulunmuyorsunuz.",source,255,0,0,true) return end
+	local example = triggerClientEvent(source, "factionPanel_example", source)
 	local faction = getElementData(source, "faction") 
 	local factionlist = getPlayersByFaction(faction)
 	for k, players in pairs(factionlist) do

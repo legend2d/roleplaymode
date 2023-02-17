@@ -38,3 +38,47 @@ addEventHandler("onClientGUIClick", root, function()
 	if source == close_button then guiSetVisible(showFactions_window, false) showCursor(false) end
 end)
 
+
+	function updatePersonalRankExample()
+		if not personelRank_window or personelRank_window and guiGetVisible(personelRank_window)==false then
+		local screenW, screenH = guiGetScreenSize()
+        personelRank_window_example = guiCreateWindow((screenW - 257) / 2, (screenH - 285) / 2, 257, 285, "Rütbe Güncelleme - Yükleniyor", false)
+        guiWindowSetMovable(personelRank_window_example, false)
+        guiWindowSetSizable(personelRank_window_example, false)
+        guiSetAlpha(personelRank_window_example, 1.00)
+		else
+		guiSetVisible(personelRank_window_example, false)
+		end
+	end
+	addEvent("updatePersonalRankEx", true)
+	addEventHandler("updatePersonalRankEx", root, updatePersonalRankExample)
+
+    function updatePersonalRank(name, allrank, playerank)
+		guiSetVisible(personelRank_window_example, false)
+		if personelRank_window and guiGetVisible(personelRank_window)==true then guiSetVisible(personelRank_window, false) guiSetVisible(personelRank_window_example, false) return end
+		local screenW, screenH = guiGetScreenSize()
+        personelRank_window = guiCreateWindow((screenW - 257) / 2, (screenH - 285) / 2, 257, 285, "Rütbe Güncelleme - "..name, false)
+        guiWindowSetMovable(personelRank_window, false)
+        guiWindowSetSizable(personelRank_window, false)
+        guiSetAlpha(personelRank_window, 1.00)
+
+        personelRank_updatebutton = guiCreateButton(9, 209, 238, 31, "Rütbe Güncelle", false, personelRank_window)
+        personalRank_close = guiCreateButton(9, 244, 238, 31, "İptal", false, personelRank_window)
+        personelRank_ranks = guiCreateComboBox(9, 25, 238, 179, "", false, personelRank_window)
+		for k, ranks in pairs(allrank) do
+		guiComboBoxAddItem(personelRank_ranks, ranks.rname)
+		end
+		guiComboBoxSetSelected(personelRank_ranks, tonumber(playerank)-1)
+		target_name = name
+    end
+	addEvent("updateRankGUI", true)
+	addEventHandler("updateRankGUI", root, updatePersonalRank)
+
+	addEventHandler("onClientGUIClick", root, function()
+		if source == personalRank_close then guiSetVisible(personelRank_window, false) 
+		elseif source == personelRank_updatebutton then
+			local selected_rank = guiComboBoxGetSelected(personelRank_ranks)
+			local new_rankname = tostring(guiComboBoxGetItemText(personelRank_ranks, selected_rank))
+			triggerServerEvent("changePlayerRank", localPlayer, target_name, tonumber(selected_rank)+1, new_rankname)
+		end
+	end)
