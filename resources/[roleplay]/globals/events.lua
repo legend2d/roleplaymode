@@ -72,8 +72,12 @@ function getPlayerCharacterData(character, data)
 	if (character) and (data) then
 		local qh = dbQuery( db, "SELECT * FROM karakterler WHERE name=?", character)
    	 	local result = dbPoll( qh, -1 )
-    	if #result > 0 then  
-    		return result[1].data
+		for rid, row in ipairs (result) do
+		for column, value in pairs (row) do 
+			if column == data then
+				return value
+			end	
+		end
 		end
 	end
 end

@@ -9,6 +9,8 @@
 <export function="findPlayerByName" type="server"/>
 <export function="findPlayerByPartialNick" type="server"/>
 
+<export function="getPlayerCharacterData" type="server"/>
+
 <export function="giveMoney" type="server"/>
 <export function="takeMoney" type="server"/>
 <export function="setMoney" type="server"/>
