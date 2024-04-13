@@ -1,7 +1,7 @@
-local database = "oyun"
-local host = "188.132.174.71"
-local username = "eastlandsupervisor"
-local password = "eastlandprojectoncoast"
+local database = ""
+local host = ""
+local username = ""
+local password = ""
 
 connectData = dbConnect( "mysql", "dbname="..database..";host="..host..";charset=utf8", ""..username.."", ""..password.."", "share=1" )
 
